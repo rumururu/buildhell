@@ -33,6 +33,7 @@ class ShopTab extends StatelessWidget {
       listenable: scope.ads,
       builder: (context, _) {
         final adReady = scope.ads.isReady;
+        final waitLabel = scope.ads.isSupported ? '준비 중' : '앱 전용';
         return ListView(
           padding: const EdgeInsets.all(8),
           children: [
@@ -51,7 +52,7 @@ class ShopTab extends StatelessWidget {
               description:
                   '광고 보고 혼석 +$adGemReward (오늘 ${state.adGemsToday}/$adGemDailyLimit)',
               buttonKey: const Key('adGems'),
-              buttonLabel: adReady ? '광고 보기' : '준비 중',
+              buttonLabel: adReady ? '광고 보기' : waitLabel,
               enabled: adReady && state.canWatchAdForGems,
               color: const Color(0xFF00838F),
               onPressed: () =>
@@ -66,7 +67,7 @@ class ShopTab extends StatelessWidget {
               buttonKey: const Key('adBoost'),
               buttonLabel: adReady
                   ? (state.isAdBoosted ? '30분으로 갱신' : '광고 보기')
-                  : '준비 중',
+                  : waitLabel,
               enabled: adReady,
               color: const Color(0xFF6A1B9A),
               onPressed: () => _watchAd(

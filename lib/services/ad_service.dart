@@ -7,6 +7,9 @@ import 'ad_service_stub.dart'
 /// 보상형 광고. 광고를 끝까지 봤으면 true.
 abstract class AdService extends ChangeNotifier {
   bool get isReady;
+
+  /// 이 기기에서 광고를 지원하는지 (웹 출시판은 false).
+  bool get isSupported => true;
   Future<bool> showRewarded();
 
   /// 모바일이면 AdMob, 디버그 웹이면 가짜 광고, 그 외에는 광고 없음.
@@ -24,6 +27,8 @@ abstract class AdService extends ChangeNotifier {
 class NoAdService extends AdService {
   @override
   bool get isReady => false;
+  @override
+  bool get isSupported => false;
   @override
   Future<bool> showRewarded() async => false;
 }

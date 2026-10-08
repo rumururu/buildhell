@@ -76,7 +76,11 @@ class RebirthTab extends StatelessWidget {
           ),
           onPressed: gain >= 1 ? () => _confirm(context, state) : null,
           icon: const Text('☸️', style: TextStyle(fontSize: 18)),
-          label: Text(gain >= 1 ? '윤회하기 (+$gain 업보)' : '평생 누적 ${formatNumber(nextAt)} 영혼 필요'),
+          label: Text(
+            gain >= 1
+                ? '윤회하기 (+$gain 업보)'
+                : '평생 누적 ${formatNumber(nextAt)} 영혼 필요',
+          ),
         ),
       ],
     );

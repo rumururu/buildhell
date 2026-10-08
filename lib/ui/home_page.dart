@@ -155,7 +155,11 @@ class _HomePageState extends State<HomePage> {
                   Column(
                     children: [
                       _Header(state: state),
-                      const Expanded(flex: 4, child: TapArea()),
+                      // 심판석이 열리면 가마솥 영역을 줄여 아래 목록 공간을 확보한다.
+                      Expanded(
+                        flex: state.sinnerQueue.isEmpty ? 4 : 3,
+                        child: const TapArea(),
+                      ),
                       const JudgePanel(),
                       TabBar(
                         isScrollable: true,

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="62%" r="70%">
+      <stop offset="0" stop-color="#C62828"/>
+      <stop offset="0.55" stop-color="#5A0E0E"/>
+      <stop offset="1" stop-color="#1A0404"/>
+    </radialGradient>
+    <linearGradient id="flameOuter" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#FF3D00"/>
+      <stop offset="0.6" stop-color="#FF6D00"/>
+      <stop offset="1" stop-color="#FFAB00"/>
+    </linearGradient>
+    <linearGradient id="flameInner" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#FFD180"/>
+      <stop offset="1" stop-color="#FFF8E1"/>
+    </linearGradient>
+    <linearGradient id="pot" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3E2723"/>
+      <stop offset="1" stop-color="#120807"/>
+    </linearGradient>
+  </defs>
+  <g id="fg">
+    <!-- 바깥 불꽃 (위쪽에 뿔 두 개) -->
+    <path fill="url(#flameOuter)" d="
+      M512 140
+      C 560 250, 650 300, 690 390
+      C 700 300, 740 230, 800 190
+      C 790 300, 840 380, 840 500
+      C 840 640, 700 720, 512 720
+      C 324 720, 184 640, 184 500
+      C 184 380, 234 300, 224 190
+      C 284 230, 324 300, 334 390
+      C 374 300, 464 250, 512 140 Z"/>
+    <!-- 안쪽 불꽃 -->
+    <path fill="url(#flameInner)" d="
+      M512 330
+      C 545 410, 620 450, 630 540
+      C 638 620, 585 680, 512 680
+      C 439 680, 386 620, 394 540
+      C 404 450, 479 410, 512 330 Z"/>
+    <!-- 가마솥 -->
+    <path fill="url(#pot)" d="M196 610 H828 C 828 760, 700 860, 512 860 C 324 860, 196 760, 196 610 Z"/>
+    <rect x="160" y="585" width="704" height="56" rx="28" fill="#4E342E"/>
+    <rect x="160" y="585" width="704" height="16" rx="8" fill="#8D6E63" opacity="0.6"/>
+    <!-- 솥 다리 -->
+    <rect x="300" y="830" width="44" height="70" rx="12" fill="#120807"/>
+    <rect x="680" y="830" width="44" height="70" rx="12" fill="#120807"/>
+    <!-- 솥에 새긴 눈 (악마) -->
+    <path fill="#FF5252" d="M380 700 L470 730 L380 750 Z"/>
+    <path fill="#FF5252" d="M644 700 L554 730 L644 750 Z"/>
+  </g>
+</svg>

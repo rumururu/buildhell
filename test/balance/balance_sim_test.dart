@@ -47,22 +47,28 @@ SimResult simulate({
         final cost = s.hellCost(i, 1);
         final lv = s.hellLevels[i];
         final before = s.hellIncome(i, includeTemporary: false);
-        final after = hells[i].baseIncome *
+        final after =
+            hells[i].baseIncome *
             (lv + 1) *
             GameState.milestoneMultiplier(lv + 1) *
             s.prisonerMultiplier(i) *
             s.permanentMultiplier;
         final gain = math.max(after - before, 1e-12);
-        options.add((cost / gain, () {
-          s.buyMode = BuyMode.one;
-          return s.buyHell(i);
-        }));
+        options.add((
+          cost / gain,
+          () {
+            s.buyMode = BuyMode.one;
+            return s.buyHell(i);
+          },
+        ));
       }
       if (!s.isUpgradeMaxed(UpgradeIds.trainer)) {
         final lv = s.upgradeLevel(UpgradeIds.trainer);
         final gain = sps * 0.25 / (1 + 0.25 * lv);
-        options.add((s.upgradeCost(UpgradeIds.trainer) / gain,
-            () => s.buyUpgrade(UpgradeIds.trainer)));
+        options.add((
+          s.upgradeCost(UpgradeIds.trainer) / gain,
+          () => s.buyUpgrade(UpgradeIds.trainer),
+        ));
       }
       for (final id in [UpgradeIds.tap, UpgradeIds.court, UpgradeIds.reaper]) {
         if (s.isUpgradeMaxed(id)) continue;
@@ -112,7 +118,9 @@ SimResult simulate({
       r.rebirths.add((sec / 60, gain));
     }
     if ((sec + 1) % 60 == 0) {
-      r.spsAtMinute[(sec + 1) ~/ 60] = s.soulsPerSecond(includeTemporary: false);
+      r.spsAtMinute[(sec + 1) ~/ 60] = s.soulsPerSecond(
+        includeTemporary: false,
+      );
       r.earnedAtMinute[(sec + 1) ~/ 60] = s.totalEarned;
     }
   }
@@ -132,7 +140,9 @@ void _print(String name, SimResult r) {
   for (final min in [5, 15, 30, 60, 120, 240, 480]) {
     final v = r.spsAtMinute[min];
     if (v != null) {
-      b.writeln('  $min분 시점 초당: ${v.toStringAsExponential(2)}  누적: ${r.earnedAtMinute[min]!.toStringAsExponential(2)}');
+      b.writeln(
+        '  $min분 시점 초당: ${v.toStringAsExponential(2)}  누적: ${r.earnedAtMinute[min]!.toStringAsExponential(2)}',
+      );
     }
   }
   // ignore: avoid_print
@@ -141,7 +151,10 @@ void _print(String name, SimResult r) {
 
 void main() {
   test('윤회 없이 (곡선 측정용)', () {
-    _print('윤회 없음 4h', simulate(tapsPerSecond: 4, minutes: 240, allowRebirth: false));
+    _print(
+      '윤회 없음 4h',
+      simulate(tapsPerSecond: 4, minutes: 240, allowRebirth: false),
+    );
   });
 
   test('적극적인 플레이어 (초당 4회 터치, 4시간)', () {
@@ -150,19 +163,34 @@ void main() {
     expect(r.hellOpenedAt[0]!, lessThan(0.5), reason: '첫 지옥은 30초 안에');
     expect(r.hellOpenedAt[1]!, lessThan(3), reason: '두 번째 지옥은 3분 안에');
     expect(r.rebirths, isNotEmpty);
-    expect(r.rebirths.first.$1, inInclusiveRange(25, 90),
-        reason: '첫 윤회(업보 5)는 25~90분');
+    expect(
+      r.rebirths.first.$1,
+      inInclusiveRange(25, 90),
+      reason: '첫 윤회(업보 5)는 25~90분',
+    );
     // 윤회가 폭주하지 않는다: 4시간 동안 업보는 수백 단위 이하
     final totalKarma = r.rebirths.fold<int>(0, (a, b) => a + b.$2);
     expect(totalKarma, lessThan(1000));
-    expect(r.hellOpenedAt.containsKey(10), isFalse, reason: '무간지옥은 4시간 안에 못 연다');
+    expect(
+      r.hellOpenedAt.containsKey(10),
+      isFalse,
+      reason: '무간지옥은 4시간 안에 못 연다',
+    );
   });
 
   test('느긋한 플레이어 (초당 1회 터치, 8시간)', () {
-    final r = simulate(tapsPerSecond: 1, minutes: 480, judgeAccuracy: 0.75, catchRate: 0.4);
+    final r = simulate(
+      tapsPerSecond: 1,
+      minutes: 480,
+      judgeAccuracy: 0.75,
+      catchRate: 0.4,
+    );
     _print('느긋 8h', r);
     expect(r.hellOpenedAt[1]!, lessThan(6));
-    expect(r.hellOpenedAt.length, greaterThanOrEqualTo(8),
-        reason: '8시간이면 지옥 8곳 이상');
+    expect(
+      r.hellOpenedAt.length,
+      greaterThanOrEqualTo(8),
+      reason: '8시간이면 지옥 8곳 이상',
+    );
   });
 }

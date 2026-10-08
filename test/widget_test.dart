@@ -89,10 +89,12 @@ void main() {
 
   testWidgets('상점에서 광고 보고 혼석 받기 (가짜 광고)', (tester) async {
     final state = _fresh();
-    await tester.pumpWidget(BuildHellApp(
-      state: state,
-      ads: FakeAdService(delay: const Duration(milliseconds: 100)),
-    ));
+    await tester.pumpWidget(
+      BuildHellApp(
+        state: state,
+        ads: FakeAdService(delay: const Duration(milliseconds: 100)),
+      ),
+    );
     await tester.pump();
     await tester.tap(find.text('💎 상점'));
     for (var i = 0; i < 10; i++) {

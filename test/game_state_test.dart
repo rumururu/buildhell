@@ -181,7 +181,10 @@ void main() {
     expect(s.upgradeLevel(UpgradeIds.ledger), 2);
     expect(s.upgradeLevel(UpgradeIds.tap), 0);
     // 업보 2 (+20%) x 업적(첫 윤회, 영혼 1만, 100만 = +6%)
-    expect(s.unlockedAchievements, containsAll(['rebirth1', 'earn1e4', 'earn1e6']));
+    expect(
+      s.unlockedAchievements,
+      containsAll(['rebirth1', 'earn1e4', 'earn1e6']),
+    );
     expect(s.tapPower, closeTo(1.2 * 1.06, 1e-9));
     expect(s.rebirth(), isFalse);
     // 업보 3이 되려면 평생 누적 27 x 100만
@@ -346,7 +349,11 @@ void main() {
 
     test('터치가 형벌 임무 진행도에 반영된다', () {
       // 날짜를 바꿔가며 형벌 임무가 있는 날을 찾는다
-      for (var d = 0; d < 30 && !s.dailyQuests.any((q) => q.id == QuestIds.tap); d++) {
+      for (
+        var d = 0;
+        d < 30 && !s.dailyQuests.any((q) => q.id == QuestIds.tap);
+        d++
+      ) {
         clock.advance(const Duration(days: 1));
         s.update();
       }
