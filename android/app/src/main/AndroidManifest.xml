@@ -3,6 +3,10 @@
         android:label="지옥키우기"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- AdMob 앱 ID (현재 Google 테스트 ID, 출시 전 실제 ID로 교체) -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

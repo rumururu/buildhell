@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import '../game/data.dart';
 import '../game/game_state.dart';
 import '../game/numbers.dart';
+import '../services/sound_service.dart';
+import 'game_scope.dart';
 
 class UpgradesTab extends StatelessWidget {
-  const UpgradesTab({super.key, required this.state});
+  const UpgradesTab({super.key});
 
-  final GameState state;
-
-  String _effect(UpgradeDef u, int lv) => switch (u.id) {
+  String _effect(GameState state, UpgradeDef u, int lv) => switch (u.id) {
     UpgradeIds.tap =>
       '현재: 터치 기본 ${1 + 2 * lv}, 초당 생산의 ${(0.5 * lv).toStringAsFixed(1)}%',
     UpgradeIds.trainer => '현재: 생산량 +${25 * lv}%',
@@ -20,6 +20,7 @@ class UpgradesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = GameScope.of(context).state;
     final theme = Theme.of(context);
     return ListView(
       padding: const EdgeInsets.all(8),
@@ -54,7 +55,7 @@ class UpgradesTab extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          _effect(u, state.upgradeLevel(u.id)),
+                          _effect(state, u, state.upgradeLevel(u.id)),
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: Colors.orange.shade200,
                           ),
@@ -75,7 +76,13 @@ class UpgradesTab extends StatelessWidget {
                         disabledBackgroundColor: Colors.white10,
                       ),
                       onPressed: state.canBuyUpgrade(u.id)
-                          ? () => state.buyUpgrade(u.id)
+                          ? () {
+                              final scope = GameScope.of(context);
+                              if (state.buyUpgrade(u.id)) {
+                                scope.sfx(Sfx.upgrade);
+                                scope.haptic(Haptic.light);
+                              }
+                            }
                           : null,
                       child: state.isUpgradeMaxed(u.id)
                           ? const Text('MAX')

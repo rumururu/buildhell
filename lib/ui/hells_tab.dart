@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import '../game/data.dart';
 import '../game/game_state.dart';
 import '../game/numbers.dart';
+import '../services/sound_service.dart';
+import 'game_scope.dart';
 
 class HellsTab extends StatelessWidget {
-  const HellsTab({super.key, required this.state});
-
-  final GameState state;
+  const HellsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final state = GameScope.of(context).state;
     // 공개된 지옥 + 그 다음 하나는 "???"로 미리 보여준다.
     var visible = 0;
     while (visible < hells.length && state.isHellRevealed(visible)) {
@@ -103,6 +104,14 @@ class _HellTile extends StatelessWidget {
                       color: Colors.orange.shade200,
                     ),
                   ),
+                  if (state.prisoners[index] > 0)
+                    Text(
+                      '⛓️ 수감 죄인 ${state.prisoners[index]}명 (+${2 * state.prisoners[index]}%)',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Colors.white54,
+                      ),
+                    ),
                   if (next != null && level > 0) ...[
                     const SizedBox(height: 4),
                     LinearProgressIndicator(
@@ -134,7 +143,15 @@ class _HellTile extends StatelessWidget {
                   disabledForegroundColor: Colors.white38,
                   disabledBackgroundColor: Colors.white10,
                 ),
-                onPressed: canBuy ? () => state.buyHell(index) : null,
+                onPressed: canBuy
+                    ? () {
+                        final scope = GameScope.of(context);
+                        if (state.buyHell(index)) {
+                          scope.sfx(Sfx.buy);
+                          scope.haptic(Haptic.light);
+                        }
+                      }
+                    : null,
                 child: Column(
                   children: [
                     Text(
